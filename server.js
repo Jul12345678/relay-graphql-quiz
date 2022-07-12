@@ -1,8 +1,9 @@
 const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 const { buildSchema, graphql } = require('graphql');
+const schema = require('./schema');
 
-var schema = buildSchema(`
+const schema = buildSchema(`
   type Query {
     hello: String
   }
@@ -16,7 +17,6 @@ app.use(
   '/graphql',
   graphqlHTTP({
     schema,
-    rootValue: root,
     graphiql: true,
   }),
 );
