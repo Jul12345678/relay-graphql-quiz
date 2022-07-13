@@ -19,6 +19,8 @@ function App() {
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(true);
 
+  console.log(TOTAL_QUESTIONS, Difficulty.EASY);
+
   const startQuiz = async () => {
     setLoading(true);
     setGameOver(false);
