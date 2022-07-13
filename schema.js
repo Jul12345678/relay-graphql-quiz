@@ -73,16 +73,7 @@ const RootQuery = new GraphQLObjectType({
   fields: {
     question: {
       type: new GraphQLList(Question),
-      args: {
-        question: { type: GraphQLString },
-        category: { type: GraphQLString },
-        type: { type: GraphQLString },
-        difficulty: { type: Difficulty },
-        incorrect_answers: { type: GraphQLBoolean },
-        correct_answer: { type: GraphQLString },
-        amount: { type: GraphQLInt },
-        type: { type: GraphQLString },
-      },
+
       resolve(parent, args) {
         return axios
           .get(`https://opentdb.com/api.php?amount=10&type=boolean`)
