@@ -25,7 +25,7 @@ const AnswerObject = new GraphQLObjectType({
     question: { type: GraphQLString },
     answer: { type: GraphQLString },
     correct: { type: GraphQLBoolean },
-    correctAnswer: { type: GraphQLString },
+    correct_answer: { type: GraphQLString },
   }),
 });
 
@@ -35,10 +35,11 @@ const Props = new GraphQLObjectType({
     question: {
       type: GraphQLString,
     },
-    answer: { type: GraphQLString },
-    userAnswer: { type: AnswerObject } | undefined,
+    answer: { type: new GraphQLList(GraphQLString) },
+    userAnswer: { type: AnswerObject | undefined },
     questionNr: { type: GraphQLInt },
     totalQuestions: { type: GraphQLInt },
+    callback: { type: GraphQLString },
   }),
 });
 
@@ -46,12 +47,23 @@ const Question = new GraphQLObjectType({
   name: 'Question',
   fields: () => ({
     category: { type: GraphQLString },
-    type: { type: GraphQLBoolean },
+    type: { type: GraphQLString },
     difficulty: { type: GraphQLString },
     question: { type: GraphQLString },
-    correctAnswer: { type: GraphQLBoolean },
-    incorrectAnswers: { type: GraphQLBoolean },
-    amount: { type: GraphQLInt },
+    correct_answer: { type: GraphQLString },
+    incorrect_answers: { type: new GraphQLList(GraphQLString) },
+  }),
+});
+const QuestionState = new GraphQLObjectType({
+  name: 'QuestionState',
+  fields: () => ({
+    category: { type: GraphQLString },
+    type: { type: GraphQLString },
+    difficulty: { type: GraphQLString },
+    question: { type: GraphQLString },
+    correct_answer: { type: GraphQLString },
+    incorrect_answers: { type: new GraphQLList(GraphQLString) },
+    answers: { type: new GraphQLList(GraphQLString) },
   }),
 });
 
@@ -62,9 +74,48 @@ const RootQuery = new GraphQLObjectType({
     question: {
       type: new GraphQLList(Question),
       args: {
+        question: { type: GraphQLString },
+        category: { type: GraphQLString },
+        type: { type: GraphQLString },
+        difficulty: { type: Difficulty },
+        incorrect_answers: { type: GraphQLBoolean },
+        correct_answer: { type: GraphQLString },
+        amount: { type: GraphQLInt },
+        type: { type: GraphQLString },
+      },
+      resolve(parent, args) {
+        return axios
+          .get(`https://opentdb.com/api.php?amount=10&type=boolean`)
+
+          .then((res) => res.data.results);
+      },
+    },
+    questionstate: {
+      type: new GraphQLList(QuestionState),
+      args: {
         category: { type: GraphQLString },
         type: { type: GraphQLString },
         difficulty: { type: GraphQLString },
+        question: { type: GraphQLString },
+        correct_answer: { type: GraphQLString },
+        incorrect_answers: { type: new GraphQLList(GraphQLString) },
+        answers: { type: new GraphQLList(GraphQLString) },
+        amount: { type: GraphQLInt },
+      },
+      resolve(parent, args) {
+        return axios
+          .get(`https://opentdb.com/api.php?amount=10&type=boolean`)
+
+          .then((res) => res.data.results);
+      },
+    },
+    answerobject: {
+      type: new GraphQLList(AnswerObject),
+      args: {
+        question: { type: GraphQLString },
+        answer: { type: GraphQLString },
+        correct: { type: GraphQLBoolean },
+        correct_answer: { type: GraphQLString },
       },
       resolve(parent, args) {
         return axios
