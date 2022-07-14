@@ -1,0 +1,59 @@
+schema {
+  query: RootQueryType
+}
+
+"""
+Exposes a URL that specifies the behavior of this scalar.
+"""
+directive @specifiedBy(
+  """
+  The URL that specifies the behavior of this scalar.
+  """
+  url: String!
+) on SCALAR
+
+type Answer {
+  question: String
+  answer: String
+  correct: Boolean
+  correct_answer: String
+}
+
+type Question {
+  category: String
+  type: String
+  difficulty: String
+  question: String
+  correct_answer: String
+  incorrect_answers: [String]
+}
+
+type QuestionState {
+  category: String
+  type: String
+  difficulty: String
+  question: String
+  correct_answer: String
+  incorrect_answers: [String]
+  answers: [String]
+}
+
+type RootQueryType {
+  question: [Question]
+  questionstate(
+    category: String
+    type: String
+    difficulty: String
+    question: String
+    correct_answer: String
+    incorrect_answers: [String]
+    answers: [String]
+    amount: Int
+  ): [QuestionState]
+  answerobject(
+    question: String
+    answer: String
+    correct: Boolean
+    correct_answer: String
+  ): [Answer]
+}
