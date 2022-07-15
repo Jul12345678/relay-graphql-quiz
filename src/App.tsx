@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import { fetchQuizQuestions, QuestionState } from './API';
 import Questions from './components/QuestionsDisplay';
-
-export type AnswerObject = {
-  question: string;
-  answer: string;
-  correct: boolean;
-  correctAnswer: string;
-};
+import { AnswerObject } from './types/types';
 
 const TOTAL_QUESTIONS = 10;
 
@@ -28,6 +22,7 @@ function App() {
 
     setQuestions(newQuestions);
     setScore(0);
+
     setUserAnswers([]);
     setNumber(0);
     setLoading(false);

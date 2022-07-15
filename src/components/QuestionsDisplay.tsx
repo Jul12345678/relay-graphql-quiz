@@ -1,16 +1,7 @@
 import react from 'react';
-import { AnswerObject } from '../App';
+import { PropsQuestions } from '../types/types';
 
-type Props = {
-  question: string;
-  answers: string[];
-  callback: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  userAnswer: AnswerObject | undefined;
-  questionNr: number;
-  totalQuestions: number;
-};
-
-const Questions: React.FC<Props> = ({
+const Questions: React.FC<PropsQuestions> = ({
   question,
   answers,
   callback,
