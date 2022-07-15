@@ -43,7 +43,6 @@ export default createFragmentContainer(RelayQuestions, {
     fragment RelayQuestionsDisplay_relayquestionsdisplay on RelayQuestionsDisplay {
       question
       answers
-      callback
       questionNr
       totalQuestions
     }

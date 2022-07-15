@@ -10,15 +10,6 @@ const {
   GraphQLEnumType,
 } = require('graphql');
 
-const Difficulty = new GraphQLEnumType({
-  name: 'Difficulty',
-  values: {
-    EASY: { value: 'EASY' },
-    MEDIUM: { value: 'MEDIUM' },
-    HARD: { value: 'HARD' },
-  },
-});
-
 const AnswerObject = new GraphQLObjectType({
   name: 'AnswerObject',
   fields: () => ({

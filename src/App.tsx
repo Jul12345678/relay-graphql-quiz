@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Difficulty, fetchQuizQuestions, QuestionState } from './API';
+import { fetchQuizQuestions, QuestionState } from './API';
 import Questions from './components/QuestionsDisplay';
 
 export type AnswerObject = {
@@ -19,15 +19,12 @@ function App() {
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(true);
 
-  console.log(TOTAL_QUESTIONS, Difficulty.EASY);
+  console.log(TOTAL_QUESTIONS);
 
   const startQuiz = async () => {
     setLoading(true);
     setGameOver(false);
-    const newQuestions = await fetchQuizQuestions(
-      TOTAL_QUESTIONS,
-      Difficulty.EASY,
-    );
+    const newQuestions = await fetchQuizQuestions(TOTAL_QUESTIONS);
 
     setQuestions(newQuestions);
     setScore(0);

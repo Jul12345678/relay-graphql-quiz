@@ -1,29 +1,20 @@
 import React from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
-import { RelayQuestions_relayquestions$data } from './__generated__/RelayQuestions_relayquestions.graphql';
+import { RelayAPI_relayquestions$data } from './__generated__/RelayAPI_relayquestions.graphql';
 import RelayQuestions from './RelayQuestionsDisplay';
 import { shuffleArray } from './utils';
 
 export type QuestionState = typeof RelayQuestions & { answers: string[] };
 
-export enum Difficulty {
-  EASY = 'easy',
-  MEDIUM = 'medium',
-  HARD = 'hard',
-}
-
-export const fetchQuizQuestions = async (
-  amount: number,
-  difficulty: Difficulty,
-) => {
+export const fetchQuizQuestions = async (amount: number) => {
   // Change url type=multiple for multiple choice / type=boolean for true/false
-  const endpoint = `https://opentdb.com/api.php?amount=${amount}&difficulty=${difficulty}&type=boolean`;
+  const endpoint = `https://opentdb.com/api.php?amount=${amount}&type=boolean`;
   const data = await (await fetch(endpoint)).json();
-  return data.results.map((question: RelayQuestions_relayquestions$data) => ({
-    ...question,
+  return data.results.map((relayquestions: RelayAPI_relayquestions$data) => ({
+    ...relayquestions,
     answers: shuffleArray([
-      ...this.props.question.incorrect_answers,
-      question.correct_answer,
+      relayquestions.incorrect_answers,
+      relayquestions.correct_answer,
     ]),
   }));
 };

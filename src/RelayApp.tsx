@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createFragmentContainer, graphql } from 'react-relay';
-import { Difficulty, fetchQuizQuestions, QuestionState } from './API';
+import { fetchQuizQuestions, QuestionState } from './API';
 import Questions from './components/QuestionsDisplay';
 import Callback from './RelayQuestionsDisplay';
 
@@ -24,15 +24,12 @@ function RelayApp() {
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(true);
 
-  console.log(TOTAL_QUESTIONS, Difficulty.EASY);
+  console.log(TOTAL_QUESTIONS);
 
   const startQuiz = async () => {
     setLoading(true);
     setGameOver(false);
-    const newQuestions = await fetchQuizQuestions(
-      TOTAL_QUESTIONS,
-      Difficulty.EASY,
-    );
+    const newQuestions = await fetchQuizQuestions(TOTAL_QUESTIONS);
 
     setQuestions(newQuestions);
     setScore(0);
@@ -96,10 +93,11 @@ function RelayApp() {
 export default createFragmentContainer(RelayApp, {
   answerobject: graphql`
     fragment RelayApp_answerobject on AnswerObject {
-      question
-      answer
-      correct
-      correctAnswer
+      allAnswerObjects(last: 10, orderBy: createdAt_DESC) @connection(key: "RelayApp_answerobject") {
+      edges {
+        node {
+          ...RelayApp_answerobject
+      }
     }
   `,
 });

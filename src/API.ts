@@ -11,18 +11,9 @@ export type Question = {
 
 export type QuestionState = Question & { answers: string[] };
 
-export enum Difficulty {
-  EASY = 'easy',
-  MEDIUM = 'medium',
-  HARD = 'hard',
-}
-
-export const fetchQuizQuestions = async (
-  amount: number,
-  difficulty: Difficulty,
-) => {
+export const fetchQuizQuestions = async (amount: number) => {
   // Change url type=multiple for multiple choice / type=boolean for true/false
-  const endpoint = `https://opentdb.com/api.php?amount=${amount}&difficulty=${difficulty}&type=boolean`;
+  const endpoint = `https://opentdb.com/api.php?amount=${amount}&type=boolean`;
   const data = await (await fetch(endpoint)).json();
   return data.results.map((question: Question) => ({
     ...question,
