@@ -20,23 +20,23 @@ const Difficulty = new GraphQLEnumType({
 });
 
 const AnswerObject = new GraphQLObjectType({
-  name: 'Answer',
+  name: 'AnswerObject',
   fields: () => ({
     question: { type: GraphQLString },
     answer: { type: GraphQLString },
     correct: { type: GraphQLBoolean },
-    correct_answer: { type: GraphQLString },
+    correctAnswer: { type: GraphQLString },
   }),
 });
 
-const Props = new GraphQLObjectType({
-  name: 'Props',
+const RelayQuestionsDisplay = new GraphQLObjectType({
+  name: 'RelayQuestionsDisplay',
   fields: () => ({
     question: {
       type: GraphQLString,
     },
-    answer: { type: new GraphQLList(GraphQLString) },
-    userAnswer: { type: AnswerObject | undefined },
+    answers: { type: new GraphQLList(GraphQLString) },
+    userAnswer: { type: AnswerObject },
     questionNr: { type: GraphQLInt },
     totalQuestions: { type: GraphQLInt },
     callback: { type: GraphQLString },
@@ -67,6 +67,18 @@ const QuestionState = new GraphQLObjectType({
   }),
 });
 
+const RelayQuestions = new GraphQLObjectType({
+  name: 'RelayQuestions',
+  fields: () => ({
+    category: { type: GraphQLString },
+    type: { type: GraphQLString },
+    difficulty: { type: GraphQLString },
+    question: { type: GraphQLString },
+    correct_answer: { type: GraphQLString },
+    incorrect_answers: { type: new GraphQLList(GraphQLString) },
+  }),
+});
+
 // Root Query
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -81,18 +93,20 @@ const RootQuery = new GraphQLObjectType({
           .then((res) => res.data.results);
       },
     },
+
+    relayquestionsdisplay: {
+      type: new GraphQLList(RelayQuestionsDisplay),
+      resolve(parent, args) {
+        return axios
+          .get(`https://opentdb.com/api.php?amount=10&type=boolean`)
+
+          .then((res) => res.data.results);
+      },
+    },
+
     questionstate: {
       type: new GraphQLList(QuestionState),
-      args: {
-        category: { type: GraphQLString },
-        type: { type: GraphQLString },
-        difficulty: { type: GraphQLString },
-        question: { type: GraphQLString },
-        correct_answer: { type: GraphQLString },
-        incorrect_answers: { type: new GraphQLList(GraphQLString) },
-        answers: { type: new GraphQLList(GraphQLString) },
-        amount: { type: GraphQLInt },
-      },
+
       resolve(parent, args) {
         return axios
           .get(`https://opentdb.com/api.php?amount=10&type=boolean`)
@@ -106,8 +120,18 @@ const RootQuery = new GraphQLObjectType({
         question: { type: GraphQLString },
         answer: { type: GraphQLString },
         correct: { type: GraphQLBoolean },
-        correct_answer: { type: GraphQLString },
+        correctAnswer: { type: GraphQLString },
       },
+      resolve(parent, args) {
+        return axios
+          .get(`https://opentdb.com/api.php?amount=10&type=boolean`)
+
+          .then((res) => res.data.results);
+      },
+    },
+
+    relayquestions: {
+      type: RelayQuestions,
       resolve(parent, args) {
         return axios
           .get(`https://opentdb.com/api.php?amount=10&type=boolean`)

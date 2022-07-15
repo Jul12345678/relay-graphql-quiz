@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { createFragmentContainer, graphql } from 'react-relay';
 import { Difficulty, fetchQuizQuestions, QuestionState } from './API';
 import Questions from './components/QuestionsDisplay';
+import Callback from './RelayQuestionsDisplay';
 
 export type AnswerObject = {
   question: string;
@@ -8,10 +10,13 @@ export type AnswerObject = {
   correct: boolean;
   correctAnswer: string;
 };
+type Setcallback = {
+  callback: (e: React.MouseEvent<HTMLButtonElement>) => void;
+};
 
 const TOTAL_QUESTIONS = 10;
 
-function App() {
+function RelayApp() {
   const [loading, setLoading] = useState(false);
   const [questions, setQuestions] = useState<QuestionState[]>([]);
   const [number, setNumber] = useState(0);
@@ -88,4 +93,13 @@ function App() {
   );
 }
 
-export default App;
+export default createFragmentContainer(RelayApp, {
+  answerobject: graphql`
+    fragment RelayApp_answerobject on AnswerObject {
+      question
+      answer
+      correct
+      correctAnswer
+    }
+  `,
+});

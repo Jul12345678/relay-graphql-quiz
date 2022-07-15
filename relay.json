@@ -1,5 +1,5 @@
-{
-  "src": "./src",
-  "schema": "./src/schema/schema.graphql",
-  "language": "typescript"
-}
+// {
+//   "src": "./src",
+//   "schema": "./src/schema/schema.graphql",
+//   "language": "typescript"
+// }
